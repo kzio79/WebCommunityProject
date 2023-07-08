@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.comunity.mapper.QnaReplyMapper">
+ 	<insert id="insertReplyQna" parameterType="com.comunity.domain.ReplyDTO">
+	 	insert into qnareply(board_number, replytext, replyer) values(#{board_number},#{replytext}, #{replyer})	
+	</insert>
+ 	
+ 	<select id="selectReplyQna" parameterType="int" resultType="com.comunity.domain.ReplyDTO">
+ 		select * from qnareply where board_number=#{board_number} order by reply_number desc
+ 	</select>
+ 	
+ 	<delete id="deleteReplyQna" parameterType="com.comunity.domain.ReplyDTO">
+ 		delete from qnareply where reply_number=#{reply_number} and board_number=#{board_number}
+ 	</delete>
+ 	
+ 	
+ 	<delete id="deleteReplyAllQna" parameterType="String">
+ 		delete from qnareply where board_number=#{board_number}
+ 	</delete>
+	
+ 	
+ 	<select id="deleteReplyCheckQna" parameterType="com.comunity.domain.ReplyDTO" resultType="com.comunity.domain.ReplyDTO">
+ 		<![CDATA[
+ 		select * from qnareply where create_date > #{create_date} and reply_number=#{reply_number} and board_number=#{board_number} 
+ 	    ]]>
+ 	</select>
+ 	
+</mapper>
+ 

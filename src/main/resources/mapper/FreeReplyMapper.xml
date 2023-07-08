@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.comunity.mapper.FreeReplyMapper">
+ 	<insert id="insertReplyFree" parameterType="com.comunity.domain.ReplyDTO">
+	 	insert into freereply(board_number, replytext, replyer) values(#{board_number},#{replytext}, #{replyer})	
+	</insert>
+ 	
+ 	<select id="selectReplyFree" parameterType="int" resultType="com.comunity.domain.ReplyDTO">
+ 		select * from freereply where board_number=#{board_number} order by reply_number desc
+ 	</select>
+ 	
+ 	<delete id="deleteReplyFree" parameterType="com.comunity.domain.ReplyDTO">
+ 		delete from freereply where reply_number=#{reply_number} and board_number=#{board_number}
+ 	</delete>
+ 	
+ 	<delete id="deleteReplyAllFree" parameterType="String">
+ 		delete from freereply where board_number=#{board_number}
+ 	</delete>
+	
+ 	
+ 	<select id="deleteReplyCheckFree" parameterType="com.comunity.domain.ReplyDTO" resultType="com.comunity.domain.ReplyDTO">
+ 		<![CDATA[
+ 		select * from freereply where create_date > #{create_date} and reply_number=#{reply_number} and board_number=#{board_number} 
+ 	    ]]>
+ 	</select>
+ 	
+</mapper>
+ 

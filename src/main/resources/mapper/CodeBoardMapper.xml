@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comunity.mapper.CodeBoardMapper">
+ 
+  <select id="getListCode" resultType="com.comunity.domain.BoardDTO">
+  	select * from codeboard order by cnum desc
+  </select>
+      
+  <select id="getListSearchCountCode" parameterType="String" resultType="int">
+   select count(*) as total from codeboard where title like CONCAT('%',#{title},'%')
+  </select>
+  
+  <select id="getListWithPagingCode" parameterType="com.comunity.domain.Criteria" resultType="com.comunity.domain.BoardDTO">
+  	select * from codeboard order by cnum desc limit #{pageStart},#{count}
+  </select>
+  
+  <select id="getListTotalSearchCode" parameterType="HashMap" resultType="com.comunity.domain.BoardDTO">
+  	select * from codeboard where title in (select title from codeboard where title like CONCAT('%',#{title},'%') order by cnum desc) 
+     order by cnum desc limit #{pageStart},#{count};
+  </select>
+  
+  <select id="getListTotalCode" resultType="int">
+  	select count(*) as total from codeboard
+  </select> 
+  
+  <insert id="insertBoardCode" parameterType="com.comunity.domain.BoardDTO">
+ 		insert into codeboard(writer,title,content) values(#{writer},#{title},#{content})
+  </insert>
+  
+  <select id="getContentCode" parameterType="int" resultType="com.comunity.domain.BoardDTO">
+ 		select * from codeboard where cnum=#{cnum}
+  </select>
+  
+  <update id="updateBoardCode" parameterType="com.comunity.domain.BoardDTO">
+  		update codeboard set title=#{title}, content=#{content}, newdate=now() where cnum=#{cnum}
+  </update>
+  
+  <delete id="deleteBoardCode" parameterType="int">
+  		delete from codeboard where cnum=#{cnum}
+  </delete>
+ 
+  <update id="hitCode" parameterType="int">
+  		update codeboard set hit=hit+1 where cnum=#{cnum}
+  </update>
+  
+  <select id="getListCodeForHome" resultType="com.comunity.domain.BoardDTO">
+  	select * from codeboard order by hit desc
+  </select>
+
+</mapper>

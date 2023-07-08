@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comunity.mapper.QnaBoardMapper">
+ 
+ <select id="getListQna" resultType="com.comunity.domain.BoardDTO">
+  	select * from qnaboard order by qnum desc
+  </select>
+      
+  <select id="getListSearchCountQna" parameterType="String" resultType="int">
+   select count(*) as total from qnaboard where title like CONCAT('%',#{title},'%')
+  </select>
+  
+  <select id="getListWithPagingQna" parameterType="com.comunity.domain.Criteria" resultType="com.comunity.domain.BoardDTO">
+  	select * from qnaboard order by qnum desc limit #{pageStart},#{count}
+  </select>
+  
+  <select id="getListTotalSearchQna" parameterType="HashMap" resultType="com.comunity.domain.BoardDTO">
+  	select * from qnaboard where title in (select title from qnaboard where title like CONCAT('%',#{title},'%') order by qnum desc) 
+     order by qnum desc limit #{pageStart},#{count};
+  </select>
+  
+  <select id="getListTotalQna" resultType="int">
+  	select count(*) as total from qnaboard
+  </select> 
+  
+  <insert id="insertBoardQna" parameterType="com.comunity.domain.BoardDTO">
+ 		insert into qnaboard(writer,title,content) values(#{writer},#{title},#{content})
+  </insert>
+  
+  <select id="getContentQna" parameterType="int" resultType="com.comunity.domain.BoardDTO">
+ 		select * from qnaboard where qnum=#{qnum}
+  </select>
+  
+  <update id="updateBoardQna" parameterType="com.comunity.domain.BoardDTO">
+  		update qnaboard set title=#{title}, content=#{content}, newdate=now() where qnum=#{qnum}
+  </update>
+  
+  <delete id="deleteBoardQna" parameterType="int">
+  		delete from qnaboard where qnum=#{qnum}
+  </delete>
+ 
+  <update id="hitQna" parameterType="int">
+  		update qnaboard set hit=hit+1 where qnum=#{qnum}
+  </update>
+
+  <select id="getListQnaForHome" resultType="com.comunity.domain.BoardDTO">
+  	select * from qnaboard order by hit desc
+  </select>
+  
+ </mapper>

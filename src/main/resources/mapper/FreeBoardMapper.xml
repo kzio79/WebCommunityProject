@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comunity.mapper.FreeBoardMapper">
+ 
+   <select id="getListFree" resultType="com.comunity.domain.BoardDTO">
+  	select * from freeboard order by fnum desc
+  </select>
+      
+  <select id="getListSearchCountFree" parameterType="String" resultType="int">
+   select count(*) as total from freeboard where title like CONCAT('%',#{title},'%')
+  </select>
+  
+  <select id="getListWithPagingFree" parameterType="com.comunity.domain.Criteria" resultType="com.comunity.domain.BoardDTO">
+  	select * from freeboard order by fnum desc limit #{pageStart},#{count}
+  </select>
+  
+  <select id="getListTotalSearchFree" parameterType="HashMap" resultType="com.comunity.domain.BoardDTO">
+  	select * from freeboard where title in (select title from freeboard where title like CONCAT('%',#{title},'%') order by fnum desc) 
+     order by fnum desc limit #{pageStart},#{count};
+  </select>
+  
+  <select id="getListTotalFree" resultType="int">
+  	select count(*) as total from freeboard
+  </select> 
+  
+  <insert id="insertBoardFree" parameterType="com.comunity.domain.BoardDTO">
+ 		insert into freeboard(writer,title,content) values(#{writer},#{title},#{content})
+  </insert>
+  
+  <select id="getContentFree" parameterType="int" resultType="com.comunity.domain.BoardDTO">
+ 		select * from freeboard where fnum=#{fnum}
+  </select>
+  
+  <update id="updateBoardFree" parameterType="com.comunity.domain.BoardDTO">
+  		update freeboard set title=#{title}, content=#{content}, newdate=now() where fnum=#{fnum}
+  </update>
+  
+  <delete id="deleteBoardFree" parameterType="int">
+  		delete from freeboard where fnum=#{fnum}
+  </delete>
+ 
+  <update id="hitFree" parameterType="int">
+  		update freeboard set hit=hit+1 where fnum=#{fnum}
+  </update>
+  
+  <select id="getListFreeForHome" resultType="com.comunity.domain.BoardDTO">
+  	select * from freeboard order by hit desc
+  </select>
+ 
+ </mapper>

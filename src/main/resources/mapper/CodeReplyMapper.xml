@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.comunity.mapper.CodeReplyMapper">
+	
+	<insert id="insertReplyCode" parameterType="com.comunity.domain.ReplyDTO">
+	 	insert into codereply(board_number, replytext, replyer) values(#{board_number},#{replytext}, #{replyer})	
+	</insert>
+ 	
+ 	<select id="selectReplyCode" parameterType="int" resultType="com.comunity.domain.ReplyDTO">
+ 		select * from codereply where board_number=#{board_number} order by reply_number desc
+ 	</select>
+ 	
+ 	<delete id="deleteReplyCode" parameterType="com.comunity.domain.ReplyDTO">
+ 		delete from codereply where reply_number=#{reply_number} and board_number=#{board_number}
+ 	</delete>
+	
+	
+	<delete id="deleteReplyAllCode" parameterType="String">
+ 		delete from codereply where board_number=#{board_number}
+ 	</delete>
+	
+	
+	<select id="deleteReplyCheckCode" parameterType="com.comunity.domain.ReplyDTO" resultType="com.comunity.domain.ReplyDTO">
+ 		<![CDATA[
+ 		select * from codereply where create_date > #{create_date} and reply_number=#{reply_number} and board_number=#{board_number} 
+ 	    ]]>
+ 	</select>
+	
+</mapper>
+ 

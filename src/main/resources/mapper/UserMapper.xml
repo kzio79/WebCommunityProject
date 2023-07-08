@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.comunity.mapper.UserMapper">
+
+<!-- 회원가입 -->
+	<insert id="join" parameterType="com.comunity.domain.UserDTO">
+		insert into user (id, pw, name, nickname, email, address, addr1, address2, gender)
+		values(#{id}, #{pw}, #{name}, #{nickname}, #{email}, #{address}, #{addr1}, #{address2}, #{gender})
+	</insert>
+
+<!-- id 중복 확인 -->
+	<select id="idCheck" resultType="int" parameterType="String">
+		select count(*) from user where id=#{id}
+	</select>
+	
+<!-- 닉네임 중복 확인 -->
+	<select id="nicknameCheck" resultType="int" parameterType="String">
+		select count(*) from user where nickname=#{nickname}
+	</select>
+
+<!-- 로그인 -->	
+	<select id="login" parameterType="com.comunity.domain.UserDTO" resultType="com.comunity.domain.UserDTO">
+		select * from user where id=#{id} and pw=#{pw}
+	</select>
+	
+<!-- 회원 정보 수정 -->	
+	<update id="modify" parameterType="com.comunity.domain.UserDTO">
+		update user set pw=#{pw}, email=#{email},
+		address=#{address}, addr1=#{addr1}, address2=#{address2} where id=#{id}
+	</update>
+
+<!-- 회원 정보 확인 -->	
+	<select id="info" resultType="com.comunity.domain.UserDTO">
+		select * from user where id=#{id} 
+	</select>
+
+<!-- 회원 탈퇴 -->	
+	<delete id="delete" parameterType="com.comunity.domain.UserDTO">
+		delete from user where id=#{id} and pw=#{pw}
+	</delete>
+	
+<!-- 회원검색 : ID-->
+	<select id="searchId" parameterType="String" resultType="com.comunity.domain.UserDTO">
+		select id from user where name=#{name}
+	</select>
+	
+<!-- 회원검색 : 이름입력이  null이거나 dto에 있는지 확인하기 위한 쿼리문-->
+	<select id="selectId" parameterType="String" resultType="com.comunity.domain.UserDTO">
+		select * from user where name=#{name}
+	</select>
+
+<!-- 회원검색 : PW-->
+	<select id="searchPw" parameterType="com.comunity.domain.UserDTO" resultType="com.comunity.domain.UserDTO">
+		select pw from user where id=#{id} and email=#{email}
+	</select>
+
+<!-- 회원검색 : 이름입력이  null이거나 dto에 있는지 확인하기 위한 쿼리문-->
+	<select id="selectPw" parameterType="com.comunity.domain.UserDTO" resultType="com.comunity.domain.UserDTO">
+		select * from user where id=#{id} and email=#{email}
+	</select>
+	
+	<select id="deleteforReply" parameterType="String" resultType="Date">
+		select regdate from user where nickname=#{nickname}
+	</select>
+</mapper>  
